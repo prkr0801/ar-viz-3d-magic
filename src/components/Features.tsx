@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BarChart3, Cube3d, Glasses, Upload, Layers, Laptop, RotateCw, Smartphone } from 'lucide-react';
+import { BarChart3, Box, Glasses, Upload, Layers, Laptop, RotateCw, Smartphone } from 'lucide-react';
 
 const features = [
   {

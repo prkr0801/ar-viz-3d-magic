@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Cube3d } from 'lucide-react';
+import { Box } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Cube3d className="h-6 w-6 text-primary" />
+              <Box className="h-6 w-6 text-primary" />
               <span className="text-xl font-bold">DataViz 3D</span>
             </div>
             <p className="text-zinc-400">

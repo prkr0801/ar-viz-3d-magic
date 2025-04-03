@@ -2,14 +2,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Cube3d, Home } from 'lucide-react';
+import { Box, Home } from 'lucide-react';
 
 const NotFound = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-100 to-slate-200 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 text-center">
         <div>
-          <Cube3d className="mx-auto h-20 w-20 text-primary" />
+          <Box className="mx-auto h-20 w-20 text-primary" />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">404 - Page Not Found</h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             The page you are looking for doesn't exist or has been moved.
