@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -29,7 +28,6 @@ const DataInputForm: React.FC<DataInputFormProps> = ({ onDataSubmit }) => {
       setFile(selectedFile);
       setError(null);
       
-      // Read file
       const reader = new FileReader();
       
       reader.onload = (event) => {
@@ -65,29 +63,29 @@ const DataInputForm: React.FC<DataInputFormProps> = ({ onDataSubmit }) => {
         if (file.type === 'application/json' || file.name.endsWith('.json')) {
           parsedData = JSON.parse(jsonData);
         } else if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
-          // Simple CSV parsing logic (could be enhanced)
           const lines = csvData.split('\n');
           const headers = lines[0].split(',').map(h => h.trim());
           
           parsedData = lines.slice(1).map(line => {
-            if (!line.trim()) return null; // Skip empty lines
+            if (!line.trim()) return null;
             
             const values = line.split(',').map(v => v.trim());
             const rowData: Record<string, string | number> = {};
             
             headers.forEach((header, index) => {
-              // Attempt to convert numeric values
               const value = values[index] || '';
-              rowData[header] = isNaN(Number(value)) ? value : Number(value);
+              const numValue = Number(value);
+              rowData[header] = !isNaN(numValue) ? numValue : value;
             });
             
             return rowData;
-          }).filter(Boolean); // Remove null values
+          }).filter(Boolean);
+          
+          console.log("CSV Parsed Data:", parsedData);
         }
       } else if (activeTab === 'json') {
         parsedData = JSON.parse(jsonData);
       } else if (activeTab === 'csv') {
-        // Parse manual CSV input
         const lines = csvData.split('\n');
         const headers = lines[0].split(',').map(h => h.trim());
         
@@ -99,13 +97,34 @@ const DataInputForm: React.FC<DataInputFormProps> = ({ onDataSubmit }) => {
           
           headers.forEach((header, index) => {
             const value = values[index] || '';
-            rowData[header] = isNaN(Number(value)) ? value : Number(value);
+            const numValue = Number(value);
+            rowData[header] = !isNaN(numValue) ? numValue : value;
           });
           
           return rowData;
         }).filter(Boolean);
+        
+        console.log("Manual CSV Parsed Data:", parsedData);
       } else {
         throw new Error('No data provided');
+      }
+      
+      if (parsedData && vizType === 'bar3d') {
+        if (!parsedData.every((item: any) => 'label' in item && 'value' in item)) {
+          parsedData = parsedData.map((item: any, index: number) => {
+            const keys = Object.keys(item);
+            if (keys.length >= 2) {
+              return {
+                label: String(item[keys[0]]),
+                value: Number(item[keys[1]])
+              };
+            }
+            return { 
+              label: `Item ${index + 1}`, 
+              value: Object.values(item)[0] as number 
+            };
+          });
+        }
       }
       
       setError(null);
